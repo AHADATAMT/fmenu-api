@@ -2,17 +2,21 @@ from src import db
 from flask import render_template
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-import requests
+from sqlalchemy.sql import func
+import requests 
+
 
 
 class User(UserMixin, db.Model):
+    timestamp = db.Column(db.DateTime(timezone=True), server_default=func.now())
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
+    firstname = db.Column(db.String(80), nullable=False)
+    lastname = db.Column(db.String(80), nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
     password_hash = db.Column(db.String(), nullable=False)
     role = db.Column(db.Integer,default=0)
-    # ticket = db.relationship('Ticket', backref='ticket', lazy=True)
-    # order = db.relationship('Orders', backref='order', lazy=True)
+    orders = db.relationship('Order', backref='orders', lazy=True)
+    restaurants = db.relationship('Restaurant', backref='restaurants', lazy=True)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
