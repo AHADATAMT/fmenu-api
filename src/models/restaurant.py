@@ -9,4 +9,5 @@ class Restaurant(db.Model):
     address = db.Column(db.String(), nullable=False)
     description = db.Column(db.String(),default=0)
     user_id = db.Column(db.Integer,db.ForeignKey('user.id'))
-    # qlcode_id
+    image_id = db.Column(db.Integer,db.ForeignKey('image.id'))
+    qrcode_id = db.Column(db.Integer,db.ForeignKey('qrcode.id'))

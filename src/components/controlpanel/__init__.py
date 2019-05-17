@@ -1,8 +1,7 @@
 from flask import Blueprint
-from src import db
 
-user = Blueprint(
-    'user',
+ControlPanel = Blueprint(
+    'controlpanel',
     __name__,
     template_folder='templates',
     static_folder='static'
