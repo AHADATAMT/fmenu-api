@@ -42,7 +42,9 @@ def get_all_categories_by_user():
         "success": False,
         "categories": []
     }
-    categories = Category.query.filter_by(user_id=current_user.id)
+    # categories = Category.query.filter_by(user_id=current_user.id)
+    categories = current_user.categories
+    print(categories)
     if categories is not None:
         for category in categories:
             print(category.name)
@@ -53,5 +55,20 @@ def get_all_categories_by_user():
             }
             message["categories"].append(res)
             message["success"] = True
+
+    return jsonify(message)
+
+
+@Restaurant_Blueprint.route('delete/category/<category_id>', methods=['POST'])
+@requires_access_level(ACCESS['owner'])
+@login_required
+def deleteCategory(category_id):
+    message = {
+        "success": False,
+    }
+    target = Category.query.filter_by(id=category_id).first()
+    db.session.delete(target)
+    db.session.commit()
+    message['success'] = True
 
     return jsonify(message)

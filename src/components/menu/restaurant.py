@@ -61,7 +61,6 @@ def get_all_restaurants_by_user():
     restaurants = Restaurant.query.filter_by(user_id=current_user.id)
     if restaurants is not None:
         for restaurant in restaurants:
-            print(restaurant.name)
             res = {
                 "id": restaurant.id,
                 "name": restaurant.name,
@@ -77,7 +76,6 @@ def get_all_restaurants_by_user():
 
 
 @Restaurant_Blueprint.route('/<restaurant_id>')
-@requires_access_level(ACCESS['owner']) 
 def get_restaurant_by_user(restaurant_id):
     message = {
         "success": False,
@@ -102,7 +100,7 @@ def get_restaurant_by_user(restaurant_id):
                 "showname": dish.showname,
                 "description": dish.description,
                 "price": dish.price,
-                "img_url": dish.price,
+                "img_url": dish.img.url,
                 "selection": [],
                 "category": dish.category.showname,
             }
@@ -149,19 +147,16 @@ def update(id):
     return
 
 
-@Restaurant_Blueprint.route('delete/<id>', methods=['POST'])
+@Restaurant_Blueprint.route('delete/<restaurant_id>', methods=['POST'])
 @requires_access_level(ACCESS['owner'])
 @login_required
-def deleteRestaurant(dish_id):
+def deleteRestaurant(restaurant_id):
     message = {
         "success": False,
     }
-    target = Restaurant.query.filter_by(id=dish_id).first()
-    if target.selection is not None:
-        target.selection.clear()
+    target = Restaurant.query.filter_by(id=restaurant_id).first()
     db.session.delete(target)
     db.session.commit()
-    print(Restaurant.query.all())
     message['success'] = True
 
     return jsonify(message)

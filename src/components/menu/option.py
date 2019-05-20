@@ -65,3 +65,18 @@ def get_all_options_by_user():
             message["success"] = True
 
     return jsonify(message)
+
+
+@Restaurant_Blueprint.route('delete/option/<option_id>', methods=['POST'])
+@requires_access_level(ACCESS['owner'])
+@login_required
+def deleteoption(option_id):
+    message = {
+        "success": False,
+    }
+    target = Option.query.filter_by(id=option_id).first()
+    db.session.delete(target)
+    db.session.commit()
+    message['success'] = True
+
+    return jsonify(message)

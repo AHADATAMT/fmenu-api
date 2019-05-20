@@ -26,6 +26,9 @@ class User(UserMixin, db.Model):
     orders = db.relationship('Order', backref='orders', lazy=True)
     restaurants = db.relationship(
         'Restaurant', backref='owner', lazy=True)
+    categories = db.relationship(
+        'Category', backref='admin', lazy=True)
+    
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -34,10 +37,9 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
     def send_password_reset_email(self, token):
-        apikey = "b3f12503ed1b521baa50e37e523fcacb-7bce17e5-1288a4cc"
-        domain_name = "sandboxd56ad08b71e043f0acf78d2d27412282.mailgun.org"
-        # apikey = "get-this-from-mailgun"
-        # domain_name = "get-this-from-mailgun"
+        
+        apikey = "get-this-from-mailgun"
+        domain_name = "get-this-from-mailgun"
         print(render_template('email.html', token=token))
         requests.post(
             "https://api.mailgun.net/v3/" + domain_name + "/messages",

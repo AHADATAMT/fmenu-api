@@ -40,7 +40,7 @@ os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 from src.components.controlpanel import ControlPanel 
 app.register_blueprint(ControlPanel, url_prefix="/controlpanel")
 
-from src.components.restaurant import Restaurant_Blueprint 
+from src.components.menu import Restaurant_Blueprint 
 app.register_blueprint(Restaurant_Blueprint, url_prefix="/restaurant")
 
 @app.route("/facebook_login")

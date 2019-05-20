@@ -6,9 +6,13 @@ class Order(db.Model):
     timestamp = db.Column(db.DateTime(timezone=True),
                           server_default=func.now())
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), unique=True, nullable=False)
-    hotline = db.Column(db.String(100), unique=True, nullable=False)
-    address = db.Column(db.String(), nullable=False)
-    description = db.Column(db.String(), default=0)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    # qlcode_id
+    restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurant.id'))
+    status = db.Column(db.Integer, default=0) # payment or not yet
+
+
+class Order_detail(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    dish_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    quota = db.Column(db.Integer)
+    order_id = db.Column(db.Integer, db.ForeignKey('order.id'))
