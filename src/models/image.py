@@ -6,9 +6,11 @@ class Image(db.Model):
     timestamp = db.Column(db.DateTime(timezone=True),
                           server_default=func.now())
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), unique=True, nullable=False)
+    url = db.Column(db.String, unique=True)
     restaurants = db.relationship(
-        'Restaurant', backref='restaurant_photo', lazy=True)
+        'Restaurant', backref='img', lazy=True)
+    dishs = db.relationship(
+        'Dish', backref='img', lazy=True)
 
 
 class QRCode(db.Model):
@@ -17,6 +19,4 @@ class QRCode(db.Model):
     timestamp = db.Column(db.DateTime(timezone=True),
                           server_default=func.now())
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), unique=True, nullable=False)
-    restaurants = db.relationship(
-        'Restaurant', backref='restaurant_qrcode', lazy=True)
+    code = db.Column(db.String, unique=True)

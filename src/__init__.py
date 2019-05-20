@@ -1,7 +1,7 @@
-from flask import Flask, redirect, url_for
+from flask import Flask, redirect, url_for, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from config import Config
+from config import Config, UPLOAD_FOLDER
 from dotenv import load_dotenv
 from flask_cors import CORS
 from flask_login import LoginManager, UserMixin, logout_user, login_required, current_user, login_user
@@ -19,14 +19,14 @@ login_manager.init_app(app)
 CORS(app)
 db = SQLAlchemy(app)
 
-from src.models.helpertable import dish_option, order_dish
 from src.models.order import Order
-from src.models.option import Option, Option_meta
 from src.models.dish import Dish
+from src.models.option import Option, Option_meta
 from src.models.category import Category
 from src.models.restaurant import Restaurant
 from src.models.user import User, Token
-from src.models.image import Image, QRCode
+from src.models.image import Image
+from src.models.helpertable import dish_option, order_dish
 
 migrate = Migrate(app, db)
 
@@ -72,5 +72,21 @@ def load_user_from_request(request):
 def logout():
     logout_user()
     return redirect("http://localhost:3000/")
+
+
+# @app.route("/image/<id>")
+# def load_image(id):
+#     image = Image.query.filter_by(id=id)
+#     print(Image.name)
+#     image_name = Image.name
+#     return send_from_directory(app.upload_folder, image_name)
+
+# @app.route("/qr/<path:filename>")
+# def show_qrcode(filename):
+#     print(filename)
+#     qrcode = QRCode.query.filter_by(id=1).first()
+#     print(qrcode.name)
+#     # qrcode_url = os.path.join(UPLOAD_FOLDER, filename)
+#     return send_from_directory(UPLOAD_FOLDER, filename)
 
 from . import upload_img

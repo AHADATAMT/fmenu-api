@@ -5,4 +5,7 @@ Restaurant_Blueprint = Blueprint(
     __name__,
 )
 
-from . import views
+from . import restaurant
+from . import option
+from . import category
+from . import dish

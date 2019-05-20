@@ -25,7 +25,7 @@ class User(UserMixin, db.Model):
     access = db.Column(db.Integer, default=0)
     orders = db.relationship('Order', backref='orders', lazy=True)
     restaurants = db.relationship(
-        'Restaurant', backref='restaurants', lazy=True)
+        'Restaurant', backref='owner', lazy=True)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
